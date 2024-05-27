@@ -17,10 +17,10 @@ class Game:
 
     def debug_info(self):
         for i, row in enumerate(self.grid.cells):
-            self.debug[i+1] = [tile if tile is not None else 0 for tile in row]
-        self.debug[5] = ""
+            self.debug[i+1] = [int(str(tile)) if tile is not None else 0 for tile in row]
+        self.debug[5] = f"Score: {self.score}"
         for i, row in enumerate(self.previous_board):
-            self.debug[i+6] = [tile if tile is not None else 0 for tile in row]
+            self.debug[i+6] = [int(str(tile)) if tile is not None else 0 for tile in row]
 
     def new(self):
         self.grid = Grid(4)
@@ -98,16 +98,17 @@ class Game:
                         self.moved, score = self.grid.move_left(self.moved)
 
                     elif event.key == pygame.K_RIGHT:
-                        self.moved = self.grid.move_right(self.moved)
+                        self.moved, score = self.grid.move_right(self.moved)
 
                     elif event.key == pygame.K_UP:
-                        self.moved = self.grid.move_up(self.moved)
+                        self.moved, score = self.grid.move_up(self.moved)
 
                     elif event.key == pygame.K_DOWN:
-                        self.moved = self.grid.move_down(self.moved)
-
-                    if event.key == pygame.K_SPACE:
-                        return
+                        self.moved, score = self.grid.move_down(self.moved)
+                    
+                    elif event.key == pygame.K_ESCAPE:
+                        pygame.quit()
+                        quit(0)
 
                     self.score += score
                     print(self.score)
