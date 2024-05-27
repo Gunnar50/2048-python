@@ -156,7 +156,10 @@ class Tile:
 
         return moved, score
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        return f"Tile({self.x}, {self.y}, {self.value})"
+    
+    def __str__(self) -> str:
         return str(self.value)
 
 
