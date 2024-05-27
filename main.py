@@ -4,12 +4,6 @@ import pygame
 from settings import *
 from sprites import *
 
-"""
-todo
-- when press a button nothing moves but it still spawn a new tile
-- when grid is full game crashes
-"""
-
 
 class Game:
     def __init__(self):
