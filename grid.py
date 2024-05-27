@@ -9,11 +9,27 @@ class Grid:
     def __init__(self, size: int):
         self.size = size
         self.cells: List[List[Union[None, Tile]]] = [[None] * COLS for _ in range(ROWS)]
+        
+        self.initialise_grid()
+        # self.test_tiles()
+            
+            
+    def test_tiles(self):
         # self.cells[3] = [Tile(0, 3, 4, BROWN), Tile(1, 3, 4, BROWN), Tile(2, 3, 4, BROWN), 0]
         # self.cells[0] = [Tile(0, 0, 2, BROWN), 0, 0, Tile(3, 0, 4, BROWN)]
         # self.cells[1] = [0, Tile(1, 1, 4, BROWN), Tile(2, 1, 2, BROWN), Tile(3, 1, 32, BROWN)]
         # self.cells[2] = [0, Tile(1, 2, 64, BROWN), Tile(2, 2, 8, BROWN), Tile(3, 2, 2, BROWN)]
         # self.cells[3] = [Tile(0, 3, 8, BROWN), Tile(1, 3, 4, BROWN), Tile(2, 3, 32, BROWN), Tile(3, 3, 8, BROWN)]
+        self.values = [
+            [2, 4, 8, 16],
+            [32, 64, 2, 4],
+            [128, 4, 16, 8],
+            [2, 256, 8, 64],
+        ]
+        self.cells = [[Tile(x, y, self.values[x][y], BROWN) if self.values[x][y] is not None else None for x in range(len(self.values[y]))] for y in range(len(self.values))]
+        pass
+    
+    def initialise_grid(self) -> None:
         for _ in range(2):
             self.generate_tile()
 
@@ -88,14 +104,14 @@ class Grid:
                 tile = row[i]
                 if tile is not None:
                     moved, score = tile.move("right", self.cells, moved)
-        return moved
+        return moved, score
 
     def move_up(self, moved: bool):
         for row in self.cells:
             for tile in row:
                 if tile is not None:
                     moved, score = tile.move("up", self.cells, moved)
-        return moved
+        return moved, score
 
     def move_down(self, moved: bool):
         for i in range(len(self.cells) - 1, -1, -1):
@@ -103,7 +119,7 @@ class Grid:
                 tile = self.cells[i][j]
                 if tile is not None:
                     moved, score = tile.move("down", self.cells, moved)
-        return moved
+        return moved, score
 
     # save all tile positions and remove merger info
     def prepare_tiles(self) -> None:
@@ -122,12 +138,12 @@ class Grid:
             for y in range(len(self.cells[x])):
                 tile = self.cells[x][y]
                 if tile is not None:
-                    for offset_x in (-1, 0, 1):
-                        for offset_y in (-1, 0, 1):
-                            adjacent_x = x + offset_x
-                            adjacent_y = y + offset_y
+                    for offset_x, offset_y in ((-1, 0), (0, -1), (1, 0), (0, 1)):
+                        adjacent_x = x + offset_x
+                        adjacent_y = y + offset_y
+                        if self.within_bounds(adjacent_x, adjacent_y):
                             adjacent_tile = self.cells[adjacent_x][adjacent_y]
-                            if adjacent_tile is not None and self.within_bounds(adjacent_x, adjacent_y) and adjacent_tile.value == tile.value:
+                            if adjacent_tile is not None and adjacent_tile.value == tile.value:
                                     return True
         return False
 
