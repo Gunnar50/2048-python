@@ -2,5 +2,4 @@
 
 ### TODO:
 
-- when press a button and nothing moves, the game still spawn a new tile
-- when the grid is full, game crashes
+- check if board is full and go to game over screen

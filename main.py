@@ -2,7 +2,7 @@ import random
 
 import pygame
 from settings import *
-from sprites import *
+from grid import Grid
 
 
 class Game:
@@ -11,16 +11,16 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption(title)
         self.clock = pygame.time.Clock()
-        self.moved = False
-
+        self.moved: bool = False
         self.debug = {}
-        self.debugging = False
+        self.debugging: bool = False
 
     def debug_info(self):
         for i, row in enumerate(self.grid.cells):
-            self.debug[i+1] = row
+            self.debug[i+1] = [tile if tile is not None else 0 for tile in row]
+        self.debug[5] = ""
         for i, row in enumerate(self.previous_board):
-            self.debug[i+5] = row
+            self.debug[i+6] = [tile if tile is not None else 0 for tile in row]
 
     def new(self):
         self.grid = Grid(4)
