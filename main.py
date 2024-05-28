@@ -1,5 +1,3 @@
-import random
-
 import pygame
 from settings import *
 from grid import Grid
@@ -40,7 +38,7 @@ class Game:
 
     def update(self):
         self.grid.update()
-        if not self.grid.available_moves():
+        if not self.grid.available_moves() and not self.grid.is_moving():
             print("game over")
             self.game_over = True
             self.playing = False
@@ -69,19 +67,19 @@ class Game:
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             self.grid.prepare_tiles()
-                            self.moved = self.grid.move_left(self.moved)
+                            self.moved, score = self.grid.move_left(self.moved)
 
                         elif event.key == pygame.K_RIGHT:
                             self.grid.prepare_tiles()
-                            self.moved = self.grid.move_right(self.moved)
+                            self.moved, score = self.grid.move_right(self.moved)
 
                         elif event.key == pygame.K_UP:
                             self.grid.prepare_tiles()
-                            self.moved = self.grid.move_up(self.moved)
+                            self.moved, score = self.grid.move_up(self.moved)
 
                         elif event.key == pygame.K_DOWN:
                             self.grid.prepare_tiles()
-                            self.moved = self.grid.move_down(self.moved)
+                            self.moved, score = self.grid.move_down(self.moved)
 
                         if event.key == pygame.K_SPACE:
                             return
