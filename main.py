@@ -50,7 +50,7 @@ class Game:
         self.screen.fill(BGCOLOUR)
 
         self.grid.draw(self.screen)
-        get_info(self.debug)
+        self.get_info(self.debug)
 
         pygame.display.flip()
 
@@ -58,6 +58,9 @@ class Game:
         if self.moved and not self.grid.is_moving():
             self.grid.generate_tile()
             self.moved = False
+
+        # debugging stops at every frame
+        # press spacebar to move frame by frame
         if self.debugging:
             while True:
                 for event in pygame.event.get():

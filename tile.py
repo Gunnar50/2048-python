@@ -35,18 +35,23 @@ class Tile:
             self.scale_animation()
 
     def update_colour(self) -> None:
-        r, g, b = self.colour
-        r += self.value
-        r = min(r, 255)
-        if r == 255:
-            g += self.value
-            g = min(g, 255)
-            if g == 255:
-                b += self.value
-                b = min(b, 255)
-                if b == 255:
-                    r, g, b = BROWN
-        self.colour = r, g, b
+        if self.value > 2048:
+            colour = TILE_COLOURS["super"]
+        else:
+            colour = TILE_COLOURS[self.value]
+        self.colour = colour
+        # r, g, b = self.colour
+        # r += self.value
+        # r = min(r, 255)
+        # if r == 255:
+        #     g += self.value
+        #     g = min(g, 255)
+        #     if g == 255:
+        #         b += self.value
+        #         b = min(b, 255)
+        #         if b == 255:
+        #             r, g, b = BROWN
+        # self.colour = r, g, b
 
     def update_font(self) -> None:
         font = pygame.font.SysFont("Consolas", 72)
@@ -136,7 +141,7 @@ class Tile:
                     break
 
             elif direction == "up" or direction == "down":
-                next_tile = tiles[pos][self.col]
+                next_tile: Union[None, Tile] = tiles[pos][self.col]
                 if next_tile and next_tile.value == self.value and not next_tile.merged_from:
                     merged_tile = Tile(self.col, pos, self.value * 2, BROWN)
                     merged_tile.update_colour()
