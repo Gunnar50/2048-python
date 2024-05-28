@@ -1,7 +1,5 @@
-import copy
 import pygame
-import random
-from settings import *
+from settings import * 
 from typing import Tuple, List, Union
 
 
@@ -17,7 +15,7 @@ class Tile:
         self.moving: bool = False
         self.scale: float = 0.0  # Initial scale
         self.is_new: bool = True
-        self.frame = 0  # Start frame as -1, indicating animation hasn't started
+        self.frame = 0  # Start frame as 0, indicating animation hasn't started
         self.merged_from: Union[None, List[Tile]] = None
 
     def update_position(self, x: int, y: int) -> None:
@@ -62,6 +60,7 @@ class Tile:
         # Draw the tile scaled according to self.scale
         scaled_surface = pygame.transform.scale(self.tile_surface, (int(TILESIZE * self.scale), int(TILESIZE * self.scale)))
         pygame.draw.rect(scaled_surface, self.colour, (0, 0, int(TILESIZE * self.scale), int(TILESIZE * self.scale)), border_radius=2)
+        
         # Scale the font surface and blit it onto the scaled tile surface
         font_surface = pygame.transform.scale(self.render, (int(self.font_width * self.scale), int(self.font_height * self.scale)))
         scaled_surface.blit(font_surface, (self.font_x * self.scale, self.font_y * self.scale))
@@ -83,7 +82,7 @@ class Tile:
         # Animation finished
         else:
             self.scale = 1
-            self.is_new = False  # Stop the animation by setting frame to -1
+            self.is_new = False
 
         self.frame += 1
 
@@ -92,7 +91,8 @@ class Tile:
         distance_x = self.future_x - self.x
         distance_y = self.future_y - self.y
 
-        # We calculate the step to move. If the step is larger than the distance, we just move to the target position
+        # We calculate the step to move. If the step is larger than the distance,
+        # we just move to the target position
         step_x = speed if abs(distance_x) > speed else abs(distance_x)
         step_y = speed if abs(distance_y) > speed else abs(distance_y)
 
