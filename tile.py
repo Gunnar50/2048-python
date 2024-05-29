@@ -109,8 +109,47 @@ class Tile:
             self.y += step_y if distance_y > 0 else -step_y
             self.moving = True
 
+    def move2(self, direction: str, 
+             tiles: List[List[Union["Tile", None]]],
+             moved: bool) -> Tuple[bool, int]:
+        score = 0
+        if direction in ["left", "right"]:
+            index_func = lambda x: (self.row, x)
+            start = self.col - 1 if direction == "left" else self.col + 1
+            stop = -1 if direction == "left" else len(tiles[0])
+            step = -1 if direction == "left" else 1
+        else:
+            index_func = lambda x: (x, self.col)
+            start = self.row - 1 if direction == "up" else self.row + 1
+            stop = -1 if direction == "up" else len(tiles)
+            step = -1 if direction == "up" else 1
+
+        for pos in range(start, stop, step):
+            r, c = index_func(pos)
+            next_tile: Union[None, Tile] = tiles[r][c]
+            
+            if next_tile and next_tile.value == self.value and not next_tile.merged_from:
+                merged_tile = Tile(c, r, self.value * 2, "BROWN")
+                merged_tile.update_colour()
+                tiles[r][c] = merged_tile
+                tiles[self.row][self.col] = None
+                self.row, self.col = r, c
+                merged_tile.merged_from = [self, next_tile]
+                score += merged_tile.value
+                moved = True
+                break
+            elif not next_tile:
+                tiles[r][c], tiles[self.row][self.col] = tiles[self.row][self.col], None
+                self.row, self.col = r, c
+                moved = True
+            else:
+                break
+
+        return moved, score
+
     def move(self, direction: str, 
-             tiles: List[List[Union["Tile", None]]], moved: bool) -> Tuple[bool, int]:
+             tiles: List[List[Union["Tile", None]]],
+             moved: bool) -> Tuple[bool, int]:
         score = 0
         if direction == "left":
             range_func = range(self.col - 1, -1, -1)
