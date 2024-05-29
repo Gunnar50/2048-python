@@ -50,7 +50,7 @@ class Game:
         self.screen.fill(BGCOLOUR)
 
         self.grid.draw(self.screen)
-        self.get_info(self.debug)
+        get_info(self.debug)
 
         pygame.display.flip()
 
