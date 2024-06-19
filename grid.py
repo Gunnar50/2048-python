@@ -23,18 +23,19 @@ class Grid:
     # self.cells[2] = [0, Tile(1, 2, 64, BROWN), Tile(2, 2, 8, BROWN), Tile(3, 2, 2, BROWN)]
     # self.cells[3] = [Tile(0, 3, 8, BROWN), Tile(1, 3, 4, BROWN), Tile(2, 3, 32, BROWN), Tile(3, 3, 8, BROWN)]
     self.values = [
-        [2, 4, 8, 16],
+        [2048, 4, 4, 16],
         [32, 64, 2, 4],
         [128, 4, 16, 8],
         [2, 256, 8, 64],
     ]
-    self.cells = [[
-        Tile(x, y, self.values[x][y], BROWN)
-        if self.values[x][y] is not None else None
-        for x in range(len(self.values[y]))
-    ]
-                  for y in range(len(self.values))]
-    pass
+    self.cells = []
+    for y in range(len(self.values)):
+      row: list[Optional[Tile]] = []
+      for x in range(len(self.values[y])):
+        tile = Tile(x, y, self.values[x][y], BROWN)
+        tile.update_colour()
+        row.append(tile)
+      self.cells.append(row)
 
   def initialise_grid(self) -> None:
     for _ in range(2):
