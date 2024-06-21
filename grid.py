@@ -47,7 +47,8 @@ class Grid:
       row = random.randint(0, ROWS - 1)
       col = random.randint(0, COLS - 1)
       if self.cells[row][col] is None:
-        tile = Tile(col, row, 2 if random.random() < 0.9 else 4, BROWN)
+        tile_value = 2 if random.random() < 0.9 else 4
+        tile = Tile(col, row, tile_value, TILE_COLOURS[tile_value])
         self.insert_tile(tile)
         break
 
