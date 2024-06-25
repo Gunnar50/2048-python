@@ -23,7 +23,7 @@ TILE_COLOURS = {
 
 # game settings
 FPS = 60
-title = "2048"
+TITLE = "2048"
 ROWS = 4
 COLS = 4
 TILESIZE = 150
