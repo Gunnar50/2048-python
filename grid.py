@@ -2,7 +2,7 @@ import pygame
 import random
 from settings import *
 from tile import Tile
-from typing import Union
+from typing import Optional, Union
 
 CellsType = list[list[Union[None, Tile]]]
 
@@ -107,7 +107,7 @@ class Grid:
     for row in self.cells:
       for tile in row:
         if tile is not None:
-          moved, score = tile.move("left", self.cells, moved)
+          moved, score = tile.move(Directions.LEFT, self.cells, moved)
     return moved, score
 
   def move_right(self, moved: bool) -> tuple[bool, int]:
@@ -115,14 +115,14 @@ class Grid:
       for i in range(len(row) - 1, -1, -1):
         tile = row[i]
         if tile is not None:
-          moved, score = tile.move("right", self.cells, moved)
+          moved, score = tile.move(Directions.RIGHT, self.cells, moved)
     return moved, score
 
   def move_up(self, moved: bool) -> tuple[bool, int]:
     for row in self.cells:
       for tile in row:
         if tile is not None:
-          moved, score = tile.move("up", self.cells, moved)
+          moved, score = tile.move(Directions.UP, self.cells, moved)
     return moved, score
 
   def move_down(self, moved: bool) -> tuple[bool, int]:
@@ -130,7 +130,7 @@ class Grid:
       for j in range(len(self.cells[i])):
         tile = self.cells[i][j]
         if tile is not None:
-          moved, score = tile.move("down", self.cells, moved)
+          moved, score = tile.move(Directions.DOWN, self.cells, moved)
     return moved, score
 
   # save all tile positions and remove merger info

@@ -1,3 +1,5 @@
+import enum
+
 # COLORS (r, g, b)
 WHITE = (255, 255, 255)
 LIGHTBROWN = (87, 74, 62)
@@ -29,8 +31,13 @@ GAPSIZE = 15
 WIDTH = (TILESIZE * COLS) + (GAPSIZE * (COLS + 1)) + 200
 HEIGHT = (TILESIZE * ROWS) + (GAPSIZE * (ROWS + 1))
 
-MARGIN_X = int((WIDTH - (4 * (TILESIZE + GAPSIZE))) / 2)
-MARGIN_Y = int((HEIGHT - (4 * (TILESIZE + GAPSIZE))) / 2)
+
+class Directions(enum.Enum):
+  LEFT = 'left'
+  RIGHT = 'right'
+  UP = 'up'
+  DOWN = 'down'
+
 
 import pygame
 

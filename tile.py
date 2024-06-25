@@ -163,57 +163,66 @@ class Tile:
 
     return moved, score
 
-  def move(self, direction: str, tiles: List[List[Union["Tile", None]]],
-           moved: bool) -> Tuple[bool, int]:
+  def process_tile(
+      self,
+      tiles: list[list[Union["Tile", None]]],
+      current_position: tuple[int, int],
+      next_position: tuple[int, int],
+  ):
+    curr_x, curr_y = current_position
+    next_x, next_y = next_position
+    next_tile: Union[None, Tile] = tiles[next_x][next_y]
+
+    if next_tile and next_tile.value == self.value and not next_tile.merged_from:
+      merged_tile = Tile(next_y, next_x, self.value * 2, BROWN)
+      merged_tile.update_colour()
+      merged_tile.update_font()
+      tiles[next_x][next_y] = merged_tile
+      tiles[curr_x][curr_y] = None
+      merged_tile.merged_from = [self, next_tile]
+      return True, merged_tile.value
+
+    elif not next_tile:
+      tiles[next_x][next_y], tiles[curr_x][curr_y] = \
+        tiles[curr_x][curr_y], tiles[next_x][next_y]
+      return True, 0
+
+    return False, 0
+
+  def move(self, direction: Directions, tiles: list[list[Union["Tile", None]]],
+           moved: bool) -> tuple[bool, int]:
     score = 0
-    if direction == "left":
+    if direction == Directions.LEFT:
       range_func = range(self.col - 1, -1, -1)
-    elif direction == "right":
+    elif direction == Directions.RIGHT:
       range_func = range(self.col + 1, len(tiles))
-    elif direction == "up":
+    elif direction == Directions.UP:
       range_func = range(self.row - 1, -1, -1)
     else:
       range_func = range(self.row + 1, len(tiles))
 
+    is_horizontal = direction in [Directions.LEFT, Directions.RIGHT]
     for pos in range_func:
-      if direction == "left" or direction == "right":
-        next_tile: Union[None, Tile] = tiles[self.row][pos]
-        if next_tile and next_tile.value == self.value and not next_tile.merged_from:
-          merged_tile = Tile(pos, self.row, self.value * 2, BROWN)
-          merged_tile.update_colour()
-          tiles[self.row][pos] = merged_tile
-          tiles[self.row][self.col] = None
-          self.col = pos
-          merged_tile.merged_from = [self, next_tile]
-          score += merged_tile.value
-          moved = True
-        elif not next_tile:
-          tiles[self.row][pos], tiles[self.row][self.col] = tiles[self.row][
-              self.col], tiles[self.row][pos]
-          self.col = pos
-          moved = True
-        else:
-          break
+      current_position = self.row, self.col
+      if is_horizontal:
+        next_position = self.row, pos
+      else:
+        next_position = pos, self.col
 
-      elif direction == "up" or direction == "down":
-        next_tile: Union[None, Tile] = tiles[pos][self.col]
-        if next_tile and next_tile.value == self.value and not next_tile.merged_from:
-          merged_tile = Tile(self.col, pos, self.value * 2, BROWN)
-          merged_tile.update_colour()
-          tiles[pos][self.col] = merged_tile
-          tiles[self.row][self.col] = None
-          self.row = pos
-          merged_tile.merged_from = [self, next_tile]
-          score += merged_tile.value
-          moved = True
-
-        elif not next_tile:
-          tiles[pos][self.col], tiles[self.row][self.col] = tiles[self.row][
-              self.col], tiles[pos][self.col]
-          self.row = pos
-          moved = True
+      tile_moved, points = self.process_tile(
+          tiles,
+          current_position,
+          next_position,
+      )
+      if tile_moved:
+        moved = True
+        score += points
+        if is_horizontal:
+          self.col = pos
         else:
-          break
+          self.row = pos
+      else:
+        break
 
     return moved, score
 
