@@ -48,6 +48,11 @@ class Game:
       self.game_over = True
       self.playing = False
       self.end_screen()
+      return
+
+    if self.moved and not self.grid.is_moving():
+      self.grid.generate_tile()
+      self.moved = False
 
     self.debug_info()
 
@@ -60,10 +65,6 @@ class Game:
     pygame.display.flip()
 
   def events(self):
-    if self.moved and not self.grid.is_moving():
-      self.grid.generate_tile()
-      self.moved = False
-
     # debugging stops at every frame
     # press spacebar to move frame by frame
     if self.debugging:
@@ -96,6 +97,7 @@ class Game:
         if event.type == pygame.QUIT:
           pygame.quit()
           quit(0)
+
         if event.type == pygame.KEYDOWN:
           self.previous_board = [
               [tile for tile in cell] for cell in self.grid.cells
@@ -119,7 +121,7 @@ class Game:
             quit(0)
 
           self.score += score
-          print(self.score)
+          # print(self.score)
 
   def end_screen(self):
     while True:
