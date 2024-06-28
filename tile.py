@@ -20,9 +20,6 @@ class Tile:
     self.frame = 0  # Start frame as 0, indicating animation hasn't started
     self.merged_from: Union[None, List[Tile]] = None
 
-  def update_position(self, x: int, y: int) -> None:
-    self.row, self.col = x, y
-
   def update(self) -> None:
     self.future_x, self.future_y = (self.col *
                                     (TILESIZE + GAPSIZE)) + GAPSIZE, (
