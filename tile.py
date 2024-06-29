@@ -27,10 +27,8 @@ class Tile:
                                         (TILESIZE + GAPSIZE)) + GAPSIZE
     if self.future_x != self.x or self.future_y != self.y:
       self.move_animation()
-    elif self.future_x == self.x and self.future_y == self.y:
+    elif self.future_x == self.x and self.future_y == self.y and not self.is_new:
       self.moving = False
-
-    self.update_font()
 
     # If the tile is new, animate it
     if self.is_new:
