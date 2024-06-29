@@ -42,23 +42,13 @@ class Tile:
     else:
       colour = TILE_COLOURS[self.value]
     self.colour = colour
-    # r, g, b = self.colour
-    # r += self.value
-    # r = min(r, 255)
-    # if r == 255:
-    #     g += self.value
-    #     g = min(g, 255)
-    #     if g == 255:
-    #         b += self.value
-    #         b = min(b, 255)
-    #         if b == 255:
-    #             r, g, b = BROWN
-    # self.colour = r, g, b
 
   def update_font(self) -> None:
-    font = pygame.font.SysFont("Consolas", 72)
+    font_size = 72 if self.value < 100 else 62
+    font = pygame.font.SysFont("Helvetica", font_size, bold=True)
     font_width, font_height = font.size(str(self.value))
-    self.render = font.render(str(self.value), True, WHITE)
+    self.render = font.render(str(self.value), True,
+                              BROWN if self.value <= 4 else WHITE)
     self.font_x = (TILESIZE / 2) - (font_width / 2)
     self.font_y = (TILESIZE / 2) - (font_height / 2)
     self.font_width, self.font_height = font.size(str(self.value))
