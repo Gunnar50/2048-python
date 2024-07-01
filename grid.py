@@ -55,9 +55,6 @@ class Grid:
   def insert_tile(self, tile: Tile) -> None:
     self.cells[tile.row][tile.col] = tile
 
-  def remove_tile(self, tile: Tile) -> None:
-    self.cells[tile.row][tile.col] = None
-
   def update(self) -> None:
     for row in self.cells:
       for col in range(len(row)):
