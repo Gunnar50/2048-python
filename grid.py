@@ -57,8 +57,7 @@ class Grid:
 
   def update(self) -> None:
     for row in self.cells:
-      for col in range(len(row)):
-        tile = row[col]
+      for tile in row:
         if tile is not None:
           if tile.merged_from:
             if not self.is_moving():
@@ -80,12 +79,13 @@ class Grid:
   def draw(self, screen: pygame.Surface) -> None:
     for row in range(4):
       for col in range(4):
-        pygame.draw.rect(screen,
-                         DARKBROWN,
-                         ((row * (TILESIZE + GAPSIZE)) + GAPSIZE,
-                          (col *
-                           (TILESIZE + GAPSIZE)) + GAPSIZE, TILESIZE, TILESIZE),
-                         border_radius=2)
+        pygame.draw.rect(
+            screen,
+            DARKBROWN,
+            ((row * (TILESIZE + GAPSIZE)) + GAPSIZE,
+             (col * (TILESIZE + GAPSIZE)) + GAPSIZE, TILESIZE, TILESIZE),
+            border_radius=2,
+        )
 
     self.draw_tiles(screen)
 
