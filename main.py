@@ -10,9 +10,10 @@ class Game:
     self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption(TITLE)
     self.clock = pygame.time.Clock()
-    self.moved: bool = False
+    self.moved = False
+
     self.debug = {}
-    self.debugging: bool = False
+    self.debugging = False
 
   def debug_info(self):
     for i, row in enumerate(self.grid.cells):
@@ -74,20 +75,17 @@ class Game:
             pygame.quit()
             quit(0)
           if event.type == pygame.KEYDOWN:
+            self.grid.prepare_tiles()
             if event.key == pygame.K_LEFT:
-              self.grid.prepare_tiles()
               self.moved, score = self.grid.move_left(self.moved)
 
             elif event.key == pygame.K_RIGHT:
-              self.grid.prepare_tiles()
               self.moved, score = self.grid.move_right(self.moved)
 
             elif event.key == pygame.K_UP:
-              self.grid.prepare_tiles()
               self.moved, score = self.grid.move_up(self.moved)
 
             elif event.key == pygame.K_DOWN:
-              self.grid.prepare_tiles()
               self.moved, score = self.grid.move_down(self.moved)
 
             if event.key == pygame.K_SPACE:

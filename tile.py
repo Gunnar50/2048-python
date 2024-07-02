@@ -21,10 +21,8 @@ class Tile:
     self.merged_from: Union[None, List[Tile]] = None
 
   def update(self) -> None:
-    self.future_x, self.future_y = (self.col *
-                                    (TILESIZE + GAPSIZE)) + GAPSIZE, (
-                                        self.row *
-                                        (TILESIZE + GAPSIZE)) + GAPSIZE
+    self.future_x, self.future_y = (self.col * (TILESIZE + GAPSIZE)) + GAPSIZE,\
+                                    (self.row * (TILESIZE + GAPSIZE)) + GAPSIZE
     if self.future_x != self.x or self.future_y != self.y:
       self.move_animation()
     elif self.future_x == self.x and self.future_y == self.y and not self.is_new:
