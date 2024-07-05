@@ -101,33 +101,41 @@ class Grid:
     return False
 
   def move_left(self, moved: bool) -> tuple[bool, int]:
+    score = 0
     for row in self.cells:
       for tile in row:
         if tile is not None:
-          moved, score = tile.move(Directions.LEFT, self.cells, moved)
+          moved, points = tile.move(Directions.LEFT, self.cells, moved)
+          score += points
     return moved, score
 
   def move_right(self, moved: bool) -> tuple[bool, int]:
+    score = 0
     for row in self.cells:
       for i in range(len(row) - 1, -1, -1):
         tile = row[i]
         if tile is not None:
-          moved, score = tile.move(Directions.RIGHT, self.cells, moved)
+          moved, points = tile.move(Directions.RIGHT, self.cells, moved)
+          score += points
     return moved, score
 
   def move_up(self, moved: bool) -> tuple[bool, int]:
+    score = 0
     for row in self.cells:
       for tile in row:
         if tile is not None:
-          moved, score = tile.move(Directions.UP, self.cells, moved)
+          moved, points = tile.move(Directions.UP, self.cells, moved)
+          score += points
     return moved, score
 
   def move_down(self, moved: bool) -> tuple[bool, int]:
+    score = 0
     for i in range(len(self.cells) - 1, -1, -1):
       for j in range(len(self.cells[i])):
         tile = self.cells[i][j]
         if tile is not None:
-          moved, score = tile.move(Directions.DOWN, self.cells, moved)
+          moved, points = tile.move(Directions.DOWN, self.cells, moved)
+          score += points
     return moved, score
 
   # save all tile positions and remove merger info

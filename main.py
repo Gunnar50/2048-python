@@ -101,25 +101,24 @@ class Game:
               [tile for tile in cell] for cell in self.grid.cells
           ]
           self.grid.prepare_tiles()
-          score = 0
+          points = 0
           if event.key == pygame.K_LEFT:
-            self.moved, score = self.grid.move_left(self.moved)
+            self.moved, points = self.grid.move_left(self.moved)
 
           elif event.key == pygame.K_RIGHT:
-            self.moved, score = self.grid.move_right(self.moved)
+            self.moved, points = self.grid.move_right(self.moved)
 
           elif event.key == pygame.K_UP:
-            self.moved, score = self.grid.move_up(self.moved)
+            self.moved, points = self.grid.move_up(self.moved)
 
           elif event.key == pygame.K_DOWN:
-            self.moved, score = self.grid.move_down(self.moved)
+            self.moved, points = self.grid.move_down(self.moved)
 
           elif event.key == pygame.K_ESCAPE:
             pygame.quit()
             quit(0)
 
-          self.score += score
-          # print(self.score)
+          self.score += points
 
   def end_screen(self):
     while True:
