@@ -74,8 +74,19 @@ class Game:
           if event.type == pygame.QUIT:
             pygame.quit()
             quit(0)
+          if event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = pygame.mouse.get_pos()
+            for row in self.grid.cells:
+              for tile in row:
+                if tile and tile.is_tile(x, y):
+                  print(tile.info())
+
           if event.type == pygame.KEYDOWN:
-            self.grid.prepare_tiles()
+            if event.key == pygame.K_SPACE:
+              return
+            else:
+              self.grid.prepare_tiles()
+
             if event.key == pygame.K_LEFT:
               self.moved, score = self.grid.move_left(self.moved)
 
@@ -88,8 +99,6 @@ class Game:
             elif event.key == pygame.K_DOWN:
               self.moved, score = self.grid.move_down(self.moved)
 
-            if event.key == pygame.K_SPACE:
-              return
     else:
       for event in pygame.event.get():
         if event.type == pygame.QUIT:

@@ -18,7 +18,7 @@ class Tile:
     self.scale: float = 0.0  # Initial scale
     self.is_new: bool = True
     self.frame = 0  # Start frame as 0, indicating animation hasn't started
-    self.merged_from: Union[None, List[Tile]] = None
+    self.merged_from: list[Tile] = []
 
   def update(self) -> None:
     self.future_x, self.future_y = (self.col * (TILESIZE + GAPSIZE)) + GAPSIZE,\
@@ -177,3 +177,9 @@ class Tile:
 
   def __str__(self) -> str:
     return str(self.value)
+
+  def is_tile(self, x, y):
+    return self.x < x < self.x + TILESIZE and self.y < y < self.y + TILESIZE
+
+  def info(self):
+    return f'Tile(value={self.value} moving={self.moving} new={self.is_new} scale={self.scale})'

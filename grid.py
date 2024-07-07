@@ -143,7 +143,7 @@ class Grid:
     for row in self.cells:
       for tile in row:
         if tile is not None:
-          tile.merged_from = None
+          tile.merged_from = []
 
   def available_moves(self) -> bool:
     return self.cells_available() or self.can_merge()
