@@ -43,14 +43,15 @@ class Game:
       self.draw()
 
   def update(self):
-    self.grid.update()
-    if not self.grid.available_moves() and not self.grid.is_moving():
-      print("game over")
-      self.game_over = True
-      self.playing = False
-      self.end_screen()
-      return
+    if not self.grid.available_moves():
+      if not self.grid.is_moving() and not self.grid.is_new():
+        print("game over")
+        self.game_over = True
+        self.playing = False
+        self.end_screen()
+        return
 
+    self.grid.update()
     if self.moved and not self.grid.is_moving():
       self.grid.generate_tile()
       self.moved = False

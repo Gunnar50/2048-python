@@ -63,19 +63,19 @@ class Grid:
   def update(self) -> None:
     for row in self.cells:
       for tile in row:
-        if tile is not None:
+        if tile:
           if tile.merged_from:
-            if not self.is_moving():
-              tile.update()
             for merged_tile in tile.merged_from:
               merged_tile.update()
+            if not self.is_moving():
+              tile.update()
           else:
             tile.update()
 
   def draw_tiles(self, screen: pygame.Surface) -> None:
     for row in self.cells:
       for tile in row:
-        if tile is not None:
+        if tile:
           if tile.merged_from:
             for merged_tile in tile.merged_from:
               merged_tile.draw(screen)
@@ -101,7 +101,18 @@ class Grid:
     """
     for row in self.cells:
       for tile in row:
-        if tile and tile.moving:
+        if tile:
+          if tile.moving:
+            return True
+          for merged_tile in tile.merged_from:
+            if merged_tile.moving:
+              return True
+    return False
+
+  def is_new(self) -> bool:
+    for row in self.cells:
+      for tile in row:
+        if tile and tile.is_new:
           return True
     return False
 
