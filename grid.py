@@ -2,15 +2,16 @@ import pygame
 import random
 from settings import *
 from tile import Tile
-from typing import List, Union, Tuple
+from typing import Union
+
+CellsType = list[list[Union[None, Tile]]]
 
 
 class Grid:
 
   def __init__(self, size: int):
     self.size = size
-    self.cells: List[List[Union[None,
-                                Tile]]] = [[None] * COLS for _ in range(ROWS)]
+    self.cells: CellsType = [[None] * COLS for _ in range(ROWS)]
 
     self.initialise_grid()
     # self.test_tiles()
@@ -91,23 +92,23 @@ class Grid:
 
   def is_moving(self) -> bool:
     """
-        Check if ANY tile in the grid is moving.
-        This decides if the next move can be made or not.
-        """
+    Check if ANY tile in the grid is moving.
+    This decides if the next move can be made or not.
+    """
     for row in self.cells:
       for tile in row:
         if tile and tile.moving:
           return True
     return False
 
-  def move_left(self, moved: bool) -> Tuple[bool, int]:
+  def move_left(self, moved: bool) -> tuple[bool, int]:
     for row in self.cells:
       for tile in row:
         if tile is not None:
           moved, score = tile.move("left", self.cells, moved)
     return moved, score
 
-  def move_right(self, moved: bool) -> Tuple[bool, int]:
+  def move_right(self, moved: bool) -> tuple[bool, int]:
     for row in self.cells:
       for i in range(len(row) - 1, -1, -1):
         tile = row[i]
@@ -115,14 +116,14 @@ class Grid:
           moved, score = tile.move("right", self.cells, moved)
     return moved, score
 
-  def move_up(self, moved: bool) -> Tuple[bool, int]:
+  def move_up(self, moved: bool) -> tuple[bool, int]:
     for row in self.cells:
       for tile in row:
         if tile is not None:
           moved, score = tile.move("up", self.cells, moved)
     return moved, score
 
-  def move_down(self, moved: bool) -> Tuple[bool, int]:
+  def move_down(self, moved: bool) -> tuple[bool, int]:
     for i in range(len(self.cells) - 1, -1, -1):
       for j in range(len(self.cells[i])):
         tile = self.cells[i][j]
