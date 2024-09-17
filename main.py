@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from grid import Grid
+from text import Text
 
 
 class Game:
@@ -11,6 +12,8 @@ class Game:
     pygame.display.set_caption(TITLE)
     self.clock = pygame.time.Clock()
     self.moved = False
+    self.score_label = Text('Score 0', 10, 10, 50)
+    self.game_over_label = Text('Game Over', 100, 10, 50)
 
     self.debug = {}
     self.debugging = False
@@ -62,6 +65,7 @@ class Game:
     self.screen.fill(BGCOLOUR)
 
     self.grid.draw(self.screen)
+    self.score_label.draw(self.screen)
     get_info(self.debug)
 
     pygame.display.flip()
@@ -129,6 +133,7 @@ class Game:
             quit(0)
 
           self.score += points
+          self.score_label.update_text(f'Score {self.score}')
 
   def end_screen(self):
     while True:
@@ -139,6 +144,10 @@ class Game:
         if event.type == pygame.KEYDOWN:
           if event.key == pygame.K_RETURN:
             return
+
+      self.game_over_label.draw(self.screen)
+
+      pygame.display.flip()
 
 
 game = Game()
